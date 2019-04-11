@@ -2,7 +2,9 @@
 
 module swap PrgEnv-intel PrgEnv-gnu
 . $BUILD_ROOT/env/bin/activate
-. ENVIRON_BASE=$(dirname $(dirname $(which python)))
+export ENVIRON_BASE=$(dirname $(dirname $(which python)))
+which python
+python --version
 
 git clone https://github.com/mpi4py/mpi4py.git
 cd mpi4py
