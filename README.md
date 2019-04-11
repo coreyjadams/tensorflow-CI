@@ -10,19 +10,19 @@ This repository contains automation code based on Jenkins and Balsam infrastruct
 
 ## Jenkinsfile: pipeline definition
 
-The Jenkinsfile uses a declarative syntax to define the stages above.  We are essentially orchestrating a series of shell scripts in this case. The Jenkins pipeline is a flexible automation language which can embed Groovy scripts for more complex workflows.  See: 
-`https://jenkins.io/doc/book/pipeline/getting-started/`
+The Jenkinsfile uses a declarative syntax to define the stages above.  We are essentially orchestrating a series of shell scripts in this case. [Jenkins Pipeline](`https://jenkins.io/doc/book/pipeline/getting-started/`) is a flexible automation language which can embed Groovy scripts for more complex workflows.
+
 
 ## Build scripts
 The Theta build process is split into three shell scripts:
 
-- env-setup.sh
-- build-cython.sh
-- build-mpi4py.sh
+- [env-setup.sh](https://github.com/balsam-alcf/mpi4py-CI/blob/master/env-setup.sh)
+- [build-cython.sh](https://github.com/balsam-alcf/mpi4py-CI/blob/master/build-cython.sh)
+- [build-mpi4py.sh](https://github.com/balsam-alcf/mpi4py-CI/blob/master/build-mpi4py.sh)
 
 ## Sanity check
 
-The script job `testMPI4Py.sh` is submitted to Cobalt as a quick single-node debug job.  This job runs the `printRank.py` script to ensure that MPI is initialized correctly in this Python environment running on Theta compute nodes.
+The script job [testMPI4Py.sh](https://github.com/balsam-alcf/mpi4py-CI/blob/master/testMPI4Py.sh) is submitted to Cobalt as a quick single-node debug job.  This job runs the `printRank.py` script to ensure that MPI is initialized correctly in this Python environment running on Theta compute nodes.
 
 Since there is no "queue runner" on Theta, we write some extra logic in the Pipeline to submit the job and poll on its completion. When the job is completed, we leverage `grep -q` return code behavior to test whether `printRank.py` produced the correct output. If not, the Pipeline fails at this stage.
 
