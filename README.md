@@ -1,6 +1,6 @@
 # mpi4py: CI & Performance Measurement on Theta
 
-This repository contains automation code based on Jenkins and Balsam infrastructure for building, deploying, and performance-measurement of mpi4py on Theta. The Jenkins pipeline consists of the following stages:
+This repository contains automation code based on Jenkins and Balsam infrastructure for building, deploying, and measuring performance of mpi4py on Theta. The Jenkins pipeline consists of the following stages:
 
 1. Virtualenv setup: an environment based on cray-python 3.6 is first created for the build and test activities
 2. Cython checkout & build from source
@@ -27,7 +27,7 @@ The script job [testMPI4Py.sh](https://github.com/balsam-alcf/mpi4py-CI/blob/mas
 Since there is no "queue runner" on Theta, we write some extra logic in the Pipeline to submit the job and poll on its completion. When the job is completed, we leverage `grep -q` return code behavior to test whether `printRank.py` produced the correct output. If not, the Pipeline fails at this stage.
 
 ## Deploy & Benchmark
-Given a successful build, the `deploy-benchmark.sh` script copies the fresh environment from the ephemeral `BUILD_ROOT` directory to a more permanent location pre-configured in the Jenkinsfile (`RELEASE_ROOT`).
+Given a successful build, the [deploy-benchmark.sh](https://github.com/balsam-alcf/mpi4py-CI/blob/master/deploy-benchmark.sh) script copies the fresh environment from the ephemeral `BUILD_ROOT` directory to a more permanent location pre-configured in the Jenkinsfile (`RELEASE_ROOT`).
 
 Finally, we dispatch the benchmark suite with Balsam.  This executes asychronously; that is, the Pipeline will exit succesfully upon *submitting* the benchmark job, and it's up to us to go check on results after the benchmarks actually run on Theta (this could be much later, depending on how busy Theta is).
 
