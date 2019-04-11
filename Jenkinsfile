@@ -42,4 +42,11 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            sh 'rm -rf $BUILD_ROOT'
+            sh 'rm -rf ./cython'
+            sh 'rm -rf ./mpi4py'
+        }
+    }
 }

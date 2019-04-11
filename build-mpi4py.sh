@@ -20,3 +20,4 @@ sed -i "s/# mpif77 .*/mpif77 = ftn/g" setup.cfg
 
 CC=cc CXX=CC python setup.py build
 CC=cc CXX=CC python setup.py install --prefix=$ENVIRON_BASE
+cd -
