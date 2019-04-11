@@ -3,7 +3,8 @@ pipeline {
         label 'Datascience-Theta'
     }
     environment {
-        BUILD_ROOT = '/projects/datascience/jenkins-test/mpi4py-demo'
+        BUILD_ROOT = '/projects/datascience/jenkins-test/mpi4py-build'
+        RELEASE_ROOT = '/projects/datascience/jenkins-test/mpi4py-release'
     }
     stages {
         stage('Virtualenv Setup') {
@@ -34,16 +35,27 @@ pipeline {
                 echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
                 retry(17280) {
                    sleep(5)
-                   sh "qstat ${cobalt_id}"
+                   sh "if [ $(qstat ${cobalt_id} | wc -l) -ne 0 ]; then exit 1; fi"
                 }
                 echo "Job completed; checking output..."
-                sh 'cat *.output'
-                sh 'grep -q "Success: aprun -n2 gave rank0 and rank1" *.output'
-                sh 'grep -q "task completed normally with an exit code of 0" *.cobaltlog'
+                sh "cat ${cobalt_id}.output"
+                sh "grep -q 'Success: aprun -n2 gave rank0 and rank1' ${cobalt_id}.output"
+                sh "grep -q 'task completed normally with an exit code of 0' ${cobalt_id}.cobaltlog"
             }
         }
     }
     post {
+        success {
+            sh "cp -r $BUILD_ROOT/env $RELEASE_ROOT/"
+            mail to: 'msalim@anl.gov',
+             subject: "Success!  Pipeline: ${currentBuild.fullDisplayName} completed.",
+             body: "The build was a success in ${env.BUILD_URL}"
+        }
+        failure {
+            mail to: 'msalim@anl.gov',
+             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+             body: "Something is wrong with ${env.BUILD_URL}"
+        }
         always {
             sh 'rm -rf $BUILD_ROOT'
             sh 'rm -rf ./cython'
@@ -54,16 +66,7 @@ pipeline {
             rm *.error
             rm *.cobaltlog
             '''
-        }
-        success {
-            slackSend channel: '#datascience_team',
-                color: 'good',
-                message: "The pipeline ${currentBuild.fullDisplayName} completed successfully"
-        }
-        failure {
-            slackSend channel: '#datascience_team',
-                color: 'bad',
-                message: "The pipeline ${currentBuild.fullDisplayName} failed"
+            deleteDir()
         }
     }
 }
