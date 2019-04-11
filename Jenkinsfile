@@ -35,7 +35,7 @@ pipeline {
                 echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
                 retry(17280) {
                    sleep(5)
-                   sh "if [ $(qstat ${cobalt_id} | wc -l) -ne 0 ]; then exit 1; fi"
+                   sh "if [ \$(qstat ${cobalt_id} | wc -l) -ne 0 ]; then exit 1; fi"
                 }
                 echo "Job completed; checking output..."
                 sh "cat ${cobalt_id}.output"
