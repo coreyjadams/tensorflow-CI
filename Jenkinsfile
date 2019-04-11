@@ -28,7 +28,9 @@ pipeline {
                 QSTAT_HEADER = 'JobId:User:JobName'
             }
             steps {
-                cobalt_id = sh(returnStdout: true, script: 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh | tail -n 1').trim()
+                script {
+                    cobalt_id = sh(returnStdout: true, script: 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh | tail -n 1').trim()
+                }
                 echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
                 retry(17280) {
                    sleep(5)
