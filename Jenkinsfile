@@ -84,11 +84,14 @@ pipeline {
                 sh "grep -q 'Success: aprun -n2 gave rank0 and rank1' ${cobalt_id}.output"
             }
         }
+
+        // On success, deploy env to a permanent location
+        stage('Deploy') {
+            sh "cp -r $BUILD_ROOT/env $RELEASE_ROOT/"
+        }
     }
     post {
-        // On success, "deploy" to another location and send email
         success {
-            sh "cp -r $BUILD_ROOT/env $RELEASE_ROOT/"
             mail to: 'msalim@anl.gov',
              subject: "Success!  Pipeline: ${currentBuild.fullDisplayName} completed.",
              body: "The build was a success in ${env.BUILD_URL}"
