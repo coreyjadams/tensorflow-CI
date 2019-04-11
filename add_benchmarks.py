@@ -27,10 +27,10 @@ for script_path in BENCHMARK_SCRIPTS:
     for (num_nodes, rpn, trial) in product(NUM_NODES, RPN, TRIALS):
         job = BalsamJob(
             name=f"{num_nodes}nodes.{rpn}rpn.{trial}",
-            workflow=f"name",
+            workflow=f"{app_name}",
             application=app_name,
             num_nodes=num_nodes,
-            rpn=rpn,
+            ranks_per_node=rpn,
             **COMMON_PARAMS,
         )
         job.save()
