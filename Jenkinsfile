@@ -28,11 +28,11 @@ pipeline {
                 QSTAT_HEADER = 'JobId:User:JobName'
             }
             steps {
-                sh 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh'
-                echo "Submitted Job to cobalt; polling on completion..."
+                cobalt_id = sh(returnStdout: true, script: 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh | tail -n 1').trim()
+                echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
                 retry(17280) {
                    sleep(5)
-                   sh 'qstat -u $USER | grep -q testMPI4Py'
+                   sh 'qstat ${cobalt_id}'
                 }
                 echo "Job completed; checking output..."
                 sh 'grep -q "Success: aprun -n2 gave rank0 and rank1" *.output'
