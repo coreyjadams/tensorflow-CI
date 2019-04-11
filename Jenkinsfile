@@ -3,7 +3,7 @@ pipeline {
         label 'Datascience-Theta'
     }
     environment {
-        BUILD_ROOT=/projects/datascience/jenkins-test/mpi4py-demo
+        BUILD_ROOT = '/projects/datascience/jenkins-test/mpi4py-demo'
     }
     stages {
         stage('Virtualenv Setup') {
@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Quick Test') {
             environment { 
-                QSTAT_HEADER=JobId:User:JobName
+                QSTAT_HEADER = 'JobId:User:JobName'
             }
             steps {
                 sh 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad testMPI4Py.sh'
