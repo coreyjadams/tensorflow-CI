@@ -10,17 +10,17 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls'
-                sh 'source env-setup.sh'
+                sh '. ./env-setup.sh'
             }
         }
         stage('Build Cython') {
             steps {
-                sh 'source build-cython.sh'
+                sh '. ./build-cython.sh'
             }
         }
         stage('Build mpi4py') {
             steps {
-                sh 'source build-mpi4py.sh'
+                sh '. ./build-mpi4py.sh'
             }
         }
         stage('Quick Test') {
@@ -28,7 +28,7 @@ pipeline {
                 QSTAT_HEADER = 'JobId:User:JobName'
             }
             steps {
-                sh 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad testMPI4Py.sh'
+                sh 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh'
                 echo "Submitted Job to cobalt; polling on completion..."
                 retry(17280) {
                    sleep(5)
