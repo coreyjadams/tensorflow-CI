@@ -8,6 +8,8 @@ pipeline {
     stages {
         stage('Virtualenv Setup') {
             steps {
+                sh 'pwd'
+                sh 'ls'
                 sh 'source env-setup.sh'
             }
         }
