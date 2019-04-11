@@ -34,9 +34,10 @@ pipeline {
                 echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
                 retry(17280) {
                    sleep(5)
-                   sh 'qstat ${cobalt_id}'
+                   sh "qstat ${cobalt_id}"
                 }
                 echo "Job completed; checking output..."
+                sh 'cat *.output'
                 sh 'grep -q "Success: aprun -n2 gave rank0 and rank1" *.output'
                 sh 'grep -q "task completed normally with an exit code of 0" *.cobaltlog'
             }
@@ -47,6 +48,14 @@ pipeline {
             sh 'rm -rf $BUILD_ROOT'
             sh 'rm -rf ./cython'
             sh 'rm -rf ./mpi4py'
+            sh '''
+            rm printRank.out
+            rm *.output
+            rm *.error
+            rm *.cobaltlog
+            '''
         }
+        success {
+            slackSend 
     }
 }
