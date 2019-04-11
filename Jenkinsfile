@@ -12,10 +12,11 @@ pipeline {
     * WARNING! If you are using dollar sign ($) inside a sh command, you must 
     * escape it as "\$". */
     environment {
+        BASE_MODULE = 'cray-python/3.6.1.1'
         BUILD_ROOT = '/projects/datascience/jenkins-test/mpi4py-build'
         RELEASE_ROOT = '/projects/datascience/jenkins-test/mpi4py-release'
+        QSTAT_HEADER = 'JobId:User:JobName'
     }
-
 
     /* The stages in a pipeline run sequentially; and only if there are no 
     * failures in prior stages.  We can use nonzero shell codes to indicate
@@ -39,6 +40,7 @@ pipeline {
                 sh '. ./build-cython.sh'
             }
         }
+
         
         // Build mpi4py
         // ------------
@@ -52,14 +54,7 @@ pipeline {
         // Submit a 1 node debug job to Cobalt to test the new mpi4py
         // -----------------------------------------------------------
         stage('Quick Test') {
-            environment {
-                QSTAT_HEADER = 'JobId:User:JobName'
-                BUILD_ROOT = '/projects/datascience/jenkins-test/mpi4py-build'
-                RELEASE_ROOT = '/projects/datascience/jenkins-test/mpi4py-release'
-            }
-
             steps {
-
                 // we will "pass" BUILD_ROOT to the testMPI4Py.sh Cobalt job thru a file
                 sh "echo ${env.BUILD_ROOT} > BUILD_ROOT.path"
 
@@ -69,13 +64,10 @@ pipeline {
                     cobalt_id = sh(returnStdout: true, script: 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh | tail -n 1').trim()
                 }
 
-                // Retry 17280 times * (5 second delay) = 24 hours
-                // We are using Jenkins builtins for "retry" and "sleep"
-                // The retry will continue until a ${cobalt_id}.finished file appears
+                // Keep checking until a ${cobalt_id}.finished file appears
                 echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
-                retry(17280) {
-                   sleep(5)
-                   sh "if [ ! -f ${cobalt_id}.finished ]; then exit 1; fi"
+                timeout(time: 24, unit: 'HOURS') {
+                   sh "while [ ! -f ${cobalt_id}.finished ]; do sleep 5; done"
                 }
                 echo "Job completed; checking output..."
                 sh "cat ${cobalt_id}.output"
@@ -86,9 +78,9 @@ pipeline {
         }
 
         // On success, deploy env to a permanent location
-        stage('Deploy') {
+        stage('Deploy and Benchmark') {
             steps {
-                sh "cp -r $BUILD_ROOT/env $RELEASE_ROOT/"
+                sh ". ./deploy-benchmark.sh"
             }
         }
     }

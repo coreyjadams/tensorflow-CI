@@ -1,6 +1,6 @@
 #!/bin/bash -x
                 
-module load cray-python/3.6.1.1
+module load $BASE_MODULE
 rm -rf $BUILD_ROOT
 rm -rf ./cython
 rm -rf ./mpi4py
