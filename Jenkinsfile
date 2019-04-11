@@ -56,6 +56,14 @@ pipeline {
             '''
         }
         success {
-            slackSend 
+            slackSend channel: '#datascience_team',
+                color: 'good',
+                message: "The pipeline ${currentBuild.fullDisplayName} completed successfully"
+        }
+        failure {
+            slackSend channel: '#datascience_team',
+                color: 'bad',
+                message: "The pipeline ${currentBuild.fullDisplayName} failed"
+        }
     }
 }
