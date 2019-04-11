@@ -87,7 +87,9 @@ pipeline {
 
         // On success, deploy env to a permanent location
         stage('Deploy') {
-            sh "cp -r $BUILD_ROOT/env $RELEASE_ROOT/"
+            steps {
+                sh "cp -r $BUILD_ROOT/env $RELEASE_ROOT/"
+            }
         }
     }
     post {
