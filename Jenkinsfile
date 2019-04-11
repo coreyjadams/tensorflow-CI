@@ -57,7 +57,7 @@ pipeline {
              body: "Something is wrong with ${env.BUILD_URL}"
         }
         always {
-            sh 'rm -rf $BUILD_ROOT'
+            sh "rm -rf $BUILD_ROOT"
             sh 'rm -rf ./cython'
             sh 'rm -rf ./mpi4py'
             sh '''

@@ -1,8 +1,10 @@
 #!/bin/bash -x
 
 module swap PrgEnv-intel PrgEnv-gnu
-source $BUILD_ROOT/env/bin/activate
+. $BUILD_ROOT/env/bin/activate
 export ENVIRON_BASE=$(dirname $(dirname $(which python)))
+which python
+python --version
 
 git clone https://github.com/cython/cython.git
 cd cython

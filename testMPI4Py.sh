@@ -1,8 +1,11 @@
 #!/bin/bash -x
 
 mpi_launch="aprun"
-source $BUILD_ROOT/env/bin/activate
-$mpi_launch -n 2 python printRank.py >& printRank.out
+. $BUILD_ROOT/env/bin/activate
+which python
+python --version
+
+$mpi_launch -n 2 $BUILD_ROOT/env/bin/python printRank.py >& printRank.out
 status=$?
 if [ $status -ne 0 ]; then
     cat printRank.out
