@@ -87,12 +87,12 @@ pipeline {
     }
     post {
         success {
-            mail to: 'msalim@anl.gov',
+            mail to: 'corey.adams@anl.gov',
              subject: "Success!  Pipeline: ${currentBuild.fullDisplayName} completed.",
              body: "The build was a success in ${env.BUILD_URL}"
         }
         failure {
-            mail to: 'msalim@anl.gov',
+            mail to: 'corey.adams@anl.gov',
              subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
              body: "Something is wrong with ${env.BUILD_URL}"
         }
