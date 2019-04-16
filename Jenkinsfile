@@ -99,12 +99,12 @@ pipeline {
         // Always clean up after yourself
         always {
             sh "rm -rf $BUILD_ROOT"
-            sh 'rm -rf ./bazel_build'
-            sh 'rm -rf ./tf_build'
+            sh 'rm -rf $BUILD_ROOT/bazel_build'
+            sh 'rm -rf $BUILD_ROOT/tf_build'
             sh '''
-            rm *.output
-            rm *.error
-            rm *.cobaltlog
+            rm -f *.output
+            rm -f *.error
+            rm -f *.cobaltlog
             '''
             deleteDir()
         }
