@@ -20,7 +20,8 @@ bash ./compile.sh
 cd ../
 
 
-
+echo "Current files:"
+ls
 
 
 

@@ -98,11 +98,11 @@ pipeline {
         }
         // Always clean up after yourself
         always {
+            sh 'ls ./bazel'
             sh "rm -rf $BUILD_ROOT"
-            sh 'rm -rf ./cython'
-            sh 'rm -rf ./mpi4py'
+            sh 'rm -rf ./bazel'
+            sh 'rm -rf ./tensorflow'
             sh '''
-            rm printRank.out
             rm *.output
             rm *.error
             rm *.cobaltlog

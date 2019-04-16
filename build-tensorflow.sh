@@ -13,7 +13,7 @@ which python
 python --version
 
 
-# Install tensorflow 1.10
+# Install tensorflow 1.13
 git clone https://github.com/tensorflow/tensorflow.git
 cd tensorflow
 git checkout r1.13
