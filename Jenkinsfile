@@ -43,47 +43,47 @@ pipeline {
         }
 
         
-        // Build tensorflow
-        // ------------
-        stage('Build tensorflow') {
-            steps {
-                sh '. ./build-tensorflow.sh'
-            }
-        }
+        // // Build tensorflow
+        // // ------------
+        // stage('Build tensorflow') {
+        //     steps {
+        //         sh '. ./build-tensorflow.sh'
+        //     }
+        // }
 
 
-        // Submit a 1 node debug job to Cobalt to test the new mpi4py
-        // -----------------------------------------------------------
-        stage('Quick Test') {
-            steps {
-                // we will "pass" BUILD_ROOT to the testMPI4Py.sh Cobalt job thru a file
-                sh "echo ${env.BUILD_ROOT} > BUILD_ROOT.path"
+        // // Submit a 1 node debug job to Cobalt to test the new mpi4py
+        // // -----------------------------------------------------------
+        // stage('Quick Test') {
+        //     steps {
+        //         // we will "pass" BUILD_ROOT to the testMPI4Py.sh Cobalt job thru a file
+        //         sh "echo ${env.BUILD_ROOT} > BUILD_ROOT.path"
 
-                // use the "script" step to embed old-fashioned Jenkins procedural scripting
-                // this way, we can conveniently "capture" the Cobalt job ID from tail of stdout
-                script {
-                    cobalt_id = sh(returnStdout: true, script: 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh | tail -n 1').trim()
-                }
+        //         // use the "script" step to embed old-fashioned Jenkins procedural scripting
+        //         // this way, we can conveniently "capture" the Cobalt job ID from tail of stdout
+        //         script {
+        //             cobalt_id = sh(returnStdout: true, script: 'qsub -A datascience -n 1 -t 10 -q debug-cache-quad ./testMPI4Py.sh | tail -n 1').trim()
+        //         }
 
-                // Keep checking until a ${cobalt_id}.finished file appears
-                echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
-                timeout(time: 24, unit: 'HOURS') {
-                   sh "while [ ! -f ${cobalt_id}.finished ]; do sleep 5; done"
-                }
-                echo "Job completed; checking output..."
-                sh "cat ${cobalt_id}.output"
+        //         // Keep checking until a ${cobalt_id}.finished file appears
+        //         echo "Submitted Job to cobalt (ID ${cobalt_id}). Polling on completion..."
+        //         timeout(time: 24, unit: 'HOURS') {
+        //            sh "while [ ! -f ${cobalt_id}.finished ]; do sleep 5; done"
+        //         }
+        //         echo "Job completed; checking output..."
+        //         sh "cat ${cobalt_id}.output"
 
-                // grep -q will return 0 (success) only if there is a match:
-                sh "grep -q 'Success: aprun -n2 gave rank0 and rank1' ${cobalt_id}.output"
-            }
-        }
+        //         // grep -q will return 0 (success) only if there is a match:
+        //         sh "grep -q 'Success: aprun -n2 gave rank0 and rank1' ${cobalt_id}.output"
+        //     }
+        // }
 
-        // On success, deploy env to a permanent location
-        stage('Deploy and Benchmark') {
-            steps {
-                sh ". ./deploy-benchmark.sh"
-            }
-        }
+        // // On success, deploy env to a permanent location
+        // stage('Deploy and Benchmark') {
+        //     steps {
+        //         sh ". ./deploy-benchmark.sh"
+        //     }
+        // }
     }
     post {
         success {
@@ -98,7 +98,6 @@ pipeline {
         }
         // Always clean up after yourself
         always {
-            sh 'ls ./bazel'
             sh "rm -rf $BUILD_ROOT"
             sh 'rm -rf ./bazel_build'
             sh 'rm -rf ./tf_build'
