@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # Set up envirnoment:
-moduel load $BASE_PYTHON
+module load $BASE_PYTHON
 module swap PrgEnv-intel PrgEnv-gnu
 module load java
 export JAVA_VERSION=1.8
