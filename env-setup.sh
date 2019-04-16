@@ -1,9 +1,10 @@
 #!/bin/bash -x
                 
-module load $BASE_MODULE
+module load $BASE_PYTHON
+module swap PrgEnv-intel $PROGRAMMING_ENV
 rm -rf $BUILD_ROOT
-rm -rf ./cython
-rm -rf ./mpi4py
+rm -rf ./bazel
+rm -rf ./tensorflow
 mkdir -p $BUILD_ROOT
 export PYTHONUSERBASE=$BUILD_ROOT/.pip/theta/cray-python
 pip install --user virtualenv

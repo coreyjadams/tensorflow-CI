@@ -1,12 +1,14 @@
-# mpi4py: CI & Performance Measurement on Theta
+# Tensorflow: CI & Performance Measurement on Theta
+
+This repository is a modifed version of the one Misha Salim created for mpi4py: https://github.com/balsam-alcf/mpi4py-CI.git
 
 This repository contains automation code based on Jenkins and Balsam infrastructure for building, deploying, and measuring performance of mpi4py on Theta. The Jenkins pipeline consists of the following stages:
 
 1. Virtualenv setup: an environment based on cray-python 3.6 is first created for the build and test activities
-2. Cython checkout & build from source
-3. MPI4Py checkout & build from source
-4. Sanity check: quick single-node MPI test to ensure build was successful
-5. Deploy (i.e. copy build to permanent location) & launch performance measurement job
+2. Bazel download & build from source
+3. Tensorflow checkout & build from source
+4. Sanity check: quick single-node tensorflow test to ensure build was successful and a session can run
+5. Deploy (i.e. copy build to permanent location) & launch performance measurement job (NOT IMPLEMENTED)
 
 ## Jenkinsfile: pipeline definition
 

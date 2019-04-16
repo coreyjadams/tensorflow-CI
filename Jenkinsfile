@@ -12,9 +12,10 @@ pipeline {
     * WARNING! If you are using dollar sign ($) inside a sh command, you must 
     * escape it as "\$". */
     environment {
-        BASE_MODULE = 'cray-python/3.6.1.1'
-        BUILD_ROOT = '/projects/datascience/jenkins-test/mpi4py-build'
-        RELEASE_ROOT = '/projects/datascience/jenkins-test/mpi4py-release'
+        BASE_PYTHON = 'intelpython35/2017.0.035'
+        PROGRAMMING_ENV = 'PrgEnv-gnu'
+        BUILD_ROOT = '/projects/datascience/jenkins-test/tensorflow-build'
+        RELEASE_ROOT = '/projects/datascience/jenkins-test/tensorflow-release'
         QSTAT_HEADER = 'JobId:User:JobName'
     }
 
@@ -33,20 +34,20 @@ pipeline {
             }
         }
 
-        // Build cython
+        // Build bazel
         // ------------
-        stage('Build Cython') {
+        stage('Build Bazel') {
             steps {
-                sh '. ./build-cython.sh'
+                sh '. ./build-bazel.sh'
             }
         }
 
         
-        // Build mpi4py
+        // Build tensorflow
         // ------------
-        stage('Build mpi4py') {
+        stage('Build tensorflow') {
             steps {
-                sh '. ./build-mpi4py.sh'
+                sh '. ./build-tensorflow.sh'
             }
         }
 
