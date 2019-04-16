@@ -6,6 +6,9 @@ module swap PrgEnv-intel PrgEnv-gnu
 module load java
 export JAVA_VERSION=1.8
 
+
+mkdir $BUILD_ROOT/tf_build; cd $BUILD_ROOT/tf_build;
+
 # Activate the virtual env:
 . $BUILD_ROOT/env/bin/activate
 export ENVIRON_BASE=$(dirname $(dirname $(which python)))
@@ -20,7 +23,7 @@ git checkout r1.13
 
 ./configure # you could choose the default options all the way.
 
-../bazel-0.16.0/output/bazel build --output-user-root=../bazel-cache-dir/ \
+../bazel_build/bazel-0.16.0/output/bazel build --output-user-root=../bazel-cache-dir/ \
 --config=mkl -c opt --copt=-g --strip=never --copt='-Wl,rpath=/opt/gcc/7.3.0/snos' \
 --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mavx512f --copt=-mavx512pf \
 --copt=-mavx512cd --copt=-mavx512er --copt='-mtune=knl' --copt="-DEIGEN_USE_VML" \

@@ -100,8 +100,8 @@ pipeline {
         always {
             sh 'ls ./bazel'
             sh "rm -rf $BUILD_ROOT"
-            sh 'rm -rf ./bazel'
-            sh 'rm -rf ./tensorflow'
+            sh 'rm -rf ./bazel_build'
+            sh 'rm -rf ./tf_build'
             sh '''
             rm *.output
             rm *.error
