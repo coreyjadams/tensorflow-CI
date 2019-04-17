@@ -14,11 +14,11 @@ python --version
 mkdir $BUILD_ROOT/bazel_build; cd $BUILD_ROOT/bazel_build;
 
 
-wget https://github.com/bazelbuild/bazel/releases/download/0.16.0/bazel-0.16.0-dist.zip
-mkdir bazel-0.16.0
-cd bazel-0.16.0
-mv ../bazel-0.16.0-dist.zip ./
-unzip bazel-0.16.0-dist.zip
+wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-dist.zip
+mkdir bazel-${BAZEL_VERSION}
+cd bazel-${BAZEL_VERSION}
+mv ../bazel-${BAZEL_VERSION}-dist.zip ./
+unzip bazel-${BAZEL_VERSION}-dist.zip
 bash ./compile.sh
 cd ../
 

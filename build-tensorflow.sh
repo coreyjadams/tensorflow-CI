@@ -21,13 +21,16 @@ git clone https://github.com/tensorflow/tensorflow.git
 cd tensorflow
 git checkout r1.13
 
+# Have to add bazel to the path:
+export PATH=$BUILD_ROOT/bazel_build/bazel-${BAZEL_VERSION}/output/:$PATH
+
 ./configure # you could choose the default options all the way.
 
 ls $BUILD_ROOT/bazel_build/
-ls $BUILD_ROOT/bazel_build/bazel-0.16.0/
-ls $BUILD_ROOT/bazel_build/bazel-0.16.0/output/
+ls $BUILD_ROOT/bazel_build/bazel-${BAZEL_VERSION}/
+ls $BUILD_ROOT/bazel_build/bazel-${BAZEL_VERSION}/output/
 
-$BUILD_ROOT/bazel_build/bazel-0.16.0/output/bazel build \
+$BUILD_ROOT/bazel_build/bazel-${BAZEL_VERSION}/output/bazel build \
 --config=mkl -c opt --copt=-g --strip=never --copt='-Wl,rpath=/opt/gcc/7.3.0/snos' \
 --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mavx512f --copt=-mavx512pf \
 --copt=-mavx512cd --copt=-mavx512er --copt='-mtune=knl' --copt="-DEIGEN_USE_VML" \
