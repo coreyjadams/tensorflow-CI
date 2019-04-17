@@ -43,13 +43,13 @@ pipeline {
         }
 
         
-        // // Build tensorflow
-        // // ------------
-        // stage('Build tensorflow') {
-        //     steps {
-        //         sh '. ./build-tensorflow.sh'
-        //     }
-        // }
+        // Build tensorflow
+        // ------------
+        stage('Build tensorflow') {
+            steps {
+                sh '. ./build-tensorflow.sh'
+            }
+        }
 
 
         // // Submit a 1 node debug job to Cobalt to test the new mpi4py
