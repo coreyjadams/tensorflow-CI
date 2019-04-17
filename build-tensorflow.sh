@@ -23,7 +23,11 @@ git checkout r1.13
 
 ./configure # you could choose the default options all the way.
 
-../bazel_build/bazel-0.16.0/output/bazel build --output-user-root=../bazel-cache-dir/ \
+ls $BUILD_ROOT/bazel_build/
+ls $BUILD_ROOT/bazel_build/bazel-0.16.0/
+ls $BUILD_ROOT/bazel_build/bazel-0.16.0/output/
+
+$BUILD_ROOT/bazel_build/bazel-0.16.0/output/bazel build \
 --config=mkl -c opt --copt=-g --strip=never --copt='-Wl,rpath=/opt/gcc/7.3.0/snos' \
 --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mavx512f --copt=-mavx512pf \
 --copt=-mavx512cd --copt=-mavx512er --copt='-mtune=knl' --copt="-DEIGEN_USE_VML" \
