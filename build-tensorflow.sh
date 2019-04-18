@@ -3,6 +3,8 @@
 # Set up envirnoment:
 module load $BASE_PYTHON
 module swap PrgEnv-intel PrgEnv-gnu
+module load gcc/7.3.0
+
 module load java
 export JAVA_VERSION=1.8
 
