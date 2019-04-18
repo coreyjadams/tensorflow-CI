@@ -17,8 +17,8 @@ pipeline {
         BUILD_ROOT         = '/projects/datascience/jenkins-test/tensorflow-build'
         RELEASE_ROOT       = '/projects/datascience/jenkins-test/tensorflow-release'
         QSTAT_HEADER       = 'JobId:User:JobName'
-        BAZEL_VERSION      = '0.21.0'
-        TENSORFLOW_RELEASE = 'r1.13'
+        BAZEL_VERSION      = '0.22.0'
+        TENSORFLOW_RELEASE = 'v1.13.1'
     }
 
     /* The stages in a pipeline run sequentially; and only if there are no 
