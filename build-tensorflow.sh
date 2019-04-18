@@ -33,7 +33,7 @@ ls $BUILD_ROOT/bazel_build/bazel-${BAZEL_VERSION}/
 ls $BUILD_ROOT/bazel_build/bazel-${BAZEL_VERSION}/output/
 
 $BUILD_ROOT/bazel_build/bazel-${BAZEL_VERSION}/output/bazel \
-build --jobs 1 --local_resources 2048,0.5,1.0 \
+build \
 --config=mkl -c opt --copt=-g --strip=never --copt='-Wl,rpath=/opt/gcc/7.3.0/snos' \
 --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mavx512f --copt=-mavx512pf \
 --copt=-mavx512cd --copt=-mavx512er --copt='-mtune=knl' --copt="-DEIGEN_USE_VML" \
